@@ -1,0 +1,43 @@
+on:
+  push: 
+  pull_request:
+    types: [opened, synchronize]
+  release:
+    types: [created]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    name: Run terraform
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::204361647268:role/screensaver-terraform
+          aws-region: us-east-1
+
+      - name: Install terraform, setup git credentials
+        run: |
+          curl -o terraform.zip https://releases.hashicorp.com/terraform/1.2.3/terraform_1.2.3_linux_amd64.zip
+          unzip -o terraform.zip
+          ./terraform version
+
+      - name: Run and save Terraform Plan
+        run: | 
+          ./terraform init
+          ./terraform plan -no-color -input=false -out tfplan
+
+      - name: Run terraform apply on release
+        if: github.event_name == 'release'
+        run: | 
+          ./terraform apply -no-color -input=false -auto-approve tfplan
