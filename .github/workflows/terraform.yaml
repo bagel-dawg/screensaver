@@ -23,7 +23,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::204361647268:role/screensaver-terraform
+          role-to-assume: arn:aws:iam::204361647268:role/screensaver-terraform20221009011825055500000001
           aws-region: us-east-1
 
       - name: Install terraform, setup git credentials
