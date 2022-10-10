@@ -1,7 +1,5 @@
 # screensaver
 
-## What is this?
-
 The screensaver suite is a self-hosted version of the popular tool "Gyazo". It takes screenshots and stores them into an object store. This can be used to self-host screenshots to share with friends or collegues, and can easily be adapted to use a customer domain.
 
 ## screensaver
